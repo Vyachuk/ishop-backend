@@ -4,10 +4,10 @@ const { sendEmail } = require("../../controllers/sendEmail");
 
 const validateBody = require("../../helpers/validateBody");
 
-const { validateSchema } = require("../../Schemas/validate");
+const { emailValidateSchema } = require("../../Schemas/validate");
 
 const router = express.Router();
 
-router.post("/", validateBody(validateSchema), sendEmail);
+router.post("/", validateBody(emailValidateSchema), sendEmail);
 
 module.exports = router;

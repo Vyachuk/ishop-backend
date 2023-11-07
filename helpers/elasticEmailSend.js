@@ -18,7 +18,7 @@ const sendDataToEmail = ({ name, email, phone, message }) => {
       Body: [
         ElasticEmail.BodyPart.constructFromObject({
           ContentType: "HTML",
-          Content: `<strong>Congratulations, you have received a new request: </strong><br /> <hr /><br />Name: ${
+          Content: `<strong>Congratulations, you have received a new order: </strong><br /> <hr /><br />Name: ${
             name ? name : ""
           } <br /> Phone: ${
             phone ? phone : ""

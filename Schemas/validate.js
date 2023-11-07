@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const { emailRegexp } = require("../constants/sendEmail");
 
-const validateSchema = Joi.object({
+const emailValidateSchema = Joi.object({
   name: Joi.string(),
   phone: Joi.number(),
   email: Joi.string().pattern(emailRegexp).required(),
@@ -10,5 +10,5 @@ const validateSchema = Joi.object({
 });
 
 module.exports = {
-  validateSchema,
+  emailValidateSchema,
 };
