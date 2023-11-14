@@ -1,5 +1,4 @@
-const { ctrlWrapper } = require("../helpers");
-const { sendDataToEmail } = require("../helpers/elasticEmailSend");
+const { ctrlWrapper, sendDataToEmail } = require("../helpers");
 
 const sendEmail = (req, res, next) => {
   // console.log({ ...req.body });
