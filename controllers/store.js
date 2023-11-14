@@ -23,16 +23,15 @@ const getGudgetById = async (req, res) => {
 
 const addGudget = async (req, res) => {
   const { type, color, version, condition } = req.body;
-  // console.log(req.files);
+
   const posterPromises = req.files.map(async (item) => {
     const { path: oldPath, filename } = item;
-    const newPath = path.join(posterPath, filename);
+    const newPath = path.join(posterPath, filename.split(" ").join(""));
     await fs.rename(oldPath, newPath);
-    return path.join(posterPath, filename);
+    return path.join("public", "gudgets", filename.split(" ").join(""));
   });
   const poster = await Promise.all(posterPromises);
-  // const poster = path.join("poster", filename);
-  console.log(poster);
+
   const result = await Store.create({
     ...req.body,
     type: type.toLowerCase(),
@@ -55,9 +54,27 @@ const updateGudget = async (req, res) => {
   res.status(200).json(result);
 };
 
+const deleteGudget = async (req, res) => {
+  const { gudgetId } = req.params;
+  const { poster } = await Store.findById(gudgetId);
+  if (!poster) {
+    throw HttpError("404", "Not found");
+  }
+
+  poster.map(async (photo) => {
+    try {
+      await fs.unlink(photo);
+    } catch (error) {}
+  });
+  await Store.findByIdAndDelete(gudgetId);
+
+  res.status(200).json({ message: "contact deleted" });
+};
+
 module.exports = {
   getStore: ctrlWrapper(getStore),
   getGudgetById: ctrlWrapper(getGudgetById),
   addGudget: ctrlWrapper(addGudget),
   updateGudget: ctrlWrapper(updateGudget),
+  deleteGudget: ctrlWrapper(deleteGudget),
 };
