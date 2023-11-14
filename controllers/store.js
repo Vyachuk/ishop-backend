@@ -1,5 +1,5 @@
 const { ctrlWrapper, HttpError } = require("../helpers");
-const Store = require("../models/store");
+const Store = require("../models/store"); //update
 
 const fs = require("fs/promises");
 const path = require("path");
