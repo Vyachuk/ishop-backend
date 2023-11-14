@@ -28,7 +28,7 @@ const addGudget = async (req, res) => {
     const { path: oldPath, filename } = item;
     const newPath = path.join(posterPath, filename.split(" ").join(""));
     await fs.rename(oldPath, newPath);
-    return path.join("public", "gudgets", filename.split(" ").join(""));
+    return path.join("gudgets", filename.split(" ").join(""));
   });
   const poster = await Promise.all(posterPromises);
 
@@ -63,7 +63,7 @@ const deleteGudget = async (req, res) => {
 
   poster.map(async (photo) => {
     try {
-      await fs.unlink(photo);
+      await fs.unlink(`public/${photo}`);
     } catch (error) {}
   });
   await Store.findByIdAndDelete(gudgetId);
