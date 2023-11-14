@@ -27,8 +27,8 @@ const storeSchema = new Schema(
       type: Number,
       required: [true, "Set price for gudget"],
     },
-    image: {
-      type: String,
+    poster: {
+      type: Array,
     },
     available: {
       type: Boolean,

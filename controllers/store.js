@@ -1,6 +1,11 @@
 const { ctrlWrapper, HttpError } = require("../helpers");
 const Store = require("../models/store");
 
+const fs = require("fs/promises");
+const path = require("path");
+
+const posterPath = path.resolve("public", "gudgets");
+
 const getStore = async (req, res) => {
   const { category } = req.query;
   const result = await Store.find({ category });
@@ -18,17 +23,23 @@ const getGudgetById = async (req, res) => {
 
 const addGudget = async (req, res) => {
   const { type, color, version, condition } = req.body;
-  // const { path: oldPath, filename } = req.file;
-  // const newPath = path.join(posterPath, filename);
-  // await fs.rename(oldPath, newPath);
+  // console.log(req.files);
+  const posterPromises = req.files.map(async (item) => {
+    const { path: oldPath, filename } = item;
+    const newPath = path.join(posterPath, filename);
+    await fs.rename(oldPath, newPath);
+    return path.join(posterPath, filename);
+  });
+  const poster = await Promise.all(posterPromises);
   // const poster = path.join("poster", filename);
+  console.log(poster);
   const result = await Store.create({
     ...req.body,
     type: type.toLowerCase(),
     color: color.toLowerCase(),
     version: version.toLowerCase(),
     condition: condition.toLowerCase(),
-    // poster,
+    poster,
   });
   res.status(201).json(result);
 };
