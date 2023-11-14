@@ -1,11 +1,9 @@
 const express = require("express");
 
 const ctrl = require("../../controllers/store");
+const { validateBody, isValidId } = require("../../middlewares");
 
 const { addPhoneSchema } = require("../../Schemas/store");
-
-const validateBody = require("../../helpers/validateBody");
-const isValidId = require("../../helpers/isValidId");
 
 const router = express.Router();
 
