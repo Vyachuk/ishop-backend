@@ -4,6 +4,8 @@ const Store = require("../models/store"); //update
 const fs = require("fs/promises");
 const path = require("path");
 
+const { DEPLOY_URL } = process.env;
+
 const posterPath = path.resolve("public", "gudgets");
 
 const getStore = async (req, res) => {
@@ -28,7 +30,8 @@ const addGudget = async (req, res) => {
     const { path: oldPath, filename } = item;
     const newPath = path.join(posterPath, filename.split(" ").join(""));
     await fs.rename(oldPath, newPath);
-    return path.join("gudgets", filename.split(" ").join(""));
+    console.log(newPath);
+    return path.join(DEPLOY_URL, "gudgets", filename.split(" ").join(""));
   });
   const poster = await Promise.all(posterPromises);
 
