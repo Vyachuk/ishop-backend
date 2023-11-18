@@ -58,20 +58,23 @@ const updateGudget = async (req, res) => {
 };
 
 const deleteGudget = async (req, res) => {
-  const { gudgetId } = req.params;
-  const { poster } = await Store.findById(gudgetId);
-  if (!poster) {
-    throw HttpError("404", "Not found");
-  }
+  const { gudgetIds } = req.body;
 
-  poster.map(async (photo) => {
-    try {
-      await fs.unlink(`public/${photo}`);
-    } catch (error) {}
+  gudgetIds.map(async (gudgetId) => {
+    const { poster } = await Store.findById(gudgetId);
+    if (!poster) {
+      throw HttpError("404", "Not found");
+    }
+
+    poster.map(async (photo) => {
+      try {
+        await fs.unlink(`public/${photo}`);
+      } catch (error) {}
+    });
+    await Store.findByIdAndDelete(gudgetId);
   });
-  await Store.findByIdAndDelete(gudgetId);
 
-  res.status(200).json({ message: "contact deleted" });
+  res.status(200).json({ message: "Contacts deleted" });
 };
 
 module.exports = {
