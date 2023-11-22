@@ -4,13 +4,10 @@ const Store = require("../models/store");
 const fs = require("fs/promises");
 const path = require("path");
 
-const { DEPLOY_URL } = process.env;
-
-const posterPath = path.resolve("public", "gudgets");
-
 const getStore = async (req, res) => {
   const { category } = req.query;
-  const result = await Store.find({ category });
+  const query = category ? { category } : {};
+  const result = await Store.find(query);
   res.status(200).json(result);
 };
 
@@ -24,7 +21,7 @@ const getGudgetById = async (req, res) => {
 };
 
 const addGudget = async (req, res) => {
-  const { type, color, version, condition } = req.body;
+  const { category, color, version, condition } = req.body;
 
   const posterPromises = req.files.map(async (item) => {
     const { path, filename } = item;
@@ -36,7 +33,7 @@ const addGudget = async (req, res) => {
 
   const result = await Store.create({
     ...req.body,
-    type: type.toLowerCase(),
+    category: category.toLowerCase(),
     color: color.toLowerCase(),
     version: version.toLowerCase(),
     condition: condition.toLowerCase(),

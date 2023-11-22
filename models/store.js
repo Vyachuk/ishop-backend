@@ -8,9 +8,9 @@ const storeSchema = new Schema(
       type: String,
       required: [true, "Set name for gudget"],
     },
-    type: {
+    category: {
       type: String,
-      required: [true, "Set type for gudget"],
+      required: [true, "Set category for gudget"],
     },
     color: {
       type: String,
@@ -31,8 +31,8 @@ const storeSchema = new Schema(
       type: Array,
     },
     available: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: "Yes",
     },
     condition: {
       type: String,
