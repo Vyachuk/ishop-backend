@@ -8,6 +8,7 @@ const addPhoneSchema = Joi.object({
   storage: Joi.string(),
   version: Joi.string(), //вибір зі списку
   price: Joi.number(),
+  poster: Joi.array(),
   image: Joi.string(), //переглянути домашку
   available: Joi.boolean(),
   condition: Joi.string(),

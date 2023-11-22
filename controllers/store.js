@@ -1,5 +1,5 @@
-const { ctrlWrapper, HttpError } = require("../helpers");
-const Store = require("../models/store"); //update
+const { ctrlWrapper, HttpError, cloudinaryUploader } = require("../helpers");
+const Store = require("../models/store");
 
 const fs = require("fs/promises");
 const path = require("path");
@@ -27,11 +27,10 @@ const addGudget = async (req, res) => {
   const { type, color, version, condition } = req.body;
 
   const posterPromises = req.files.map(async (item) => {
-    const { path: oldPath, filename } = item;
-    const newPath = path.join(posterPath, filename.split(" ").join(""));
-    await fs.rename(oldPath, newPath);
-    console.log(newPath);
-    return path.join(DEPLOY_URL, "gudgets", filename.split(" ").join(""));
+    const { path, filename } = item;
+    const filePath = await cloudinaryUploader(path, "posters", filename);
+
+    return filePath;
   });
   const poster = await Promise.all(posterPromises);
 
