@@ -25,6 +25,6 @@ router.put(
   ctrl.updateGudget
 );
 
-router.post("/delete", ctrl.deleteGudget);
+router.delete("/:gudgetId", isValidId, ctrl.deleteGudget);
 
 module.exports = router;

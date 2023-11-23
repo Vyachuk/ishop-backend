@@ -1,4 +1,10 @@
-const { ctrlWrapper, HttpError, cloudinaryUploader } = require("../helpers");
+const {
+  ctrlWrapper,
+  HttpError,
+  cloudinaryUploader,
+  getPublicId,
+  cloudinaryRemover,
+} = require("../helpers");
 const Store = require("../models/store");
 
 const fs = require("fs/promises");
@@ -54,23 +60,24 @@ const updateGudget = async (req, res) => {
 };
 
 const deleteGudget = async (req, res) => {
-  const { gudgetIds } = req.body;
+  const { gudgetId } = req.params;
 
-  gudgetIds.map(async (gudgetId) => {
-    const { poster } = await Store.findById(gudgetId);
-    if (!poster) {
-      throw HttpError("404", "Not found");
-    }
+  const gudget = await Store.findById(gudgetId);
+  if (!gudget) {
+    throw HttpError(404, "Gudget not found");
+  }
 
-    poster.map(async (photo) => {
-      try {
-        await fs.unlink(`public/${photo}`);
-      } catch (error) {}
+  if (gudget.poster) {
+    gudget.poster.map(async (photo) => {
+      const public_id = getPublicId(photo);
+      await cloudinaryRemover(public_id, "posters");
     });
-    await Store.findByIdAndDelete(gudgetId);
-  });
+  }
 
-  res.status(200).json({ message: "Contacts deleted" });
+  await Store.findByIdAndDelete(gudgetId);
+  res.status(200).json({
+    message: "Success your gudget deleted",
+  });
 };
 
 module.exports = {
