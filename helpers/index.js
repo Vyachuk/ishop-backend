@@ -1,5 +1,7 @@
 const HttpError = require("./HttpError");
 const ctrlWrapper = require("./ctrlWrapper");
+const editedResult = require("./editResultForFilterData");
+
 const {
   cloudinary,
   cloudinaryUploader,
@@ -16,4 +18,5 @@ module.exports = {
   cloudinaryUploader,
   cloudinaryRemover,
   getPublicId,
+  editedResult,
 };

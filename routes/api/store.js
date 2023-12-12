@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.get("/", ctrl.getStore);
 
+router.get("/filter", ctrl.getFilter);
+
 router.get("/:gudgetId", isValidId, ctrl.getGudgetById);
 
 router.post(

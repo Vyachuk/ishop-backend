@@ -4,6 +4,7 @@ const {
   cloudinaryUploader,
   getPublicId,
   cloudinaryRemover,
+  editedResult,
 } = require("../helpers");
 const Store = require("../models/store");
 
@@ -13,6 +14,22 @@ const path = require("path");
 const getStore = async (req, res) => {
   const result = await Store.find(req.query || {});
   res.status(200).json(result);
+};
+
+const getFilter = async (req, res) => {
+  const { category } = req.query;
+  const result = await Store.find(req.query || {});
+  let newResult;
+
+  switch (category) {
+    case "iphone":
+      newResult = editedResult(result, ["name", "color", "storage", "version"]);
+      break;
+
+    default:
+      break;
+  }
+  res.status(200).json(newResult);
 };
 
 const getGudgetById = async (req, res) => {
@@ -81,6 +98,7 @@ const deleteGudget = async (req, res) => {
 module.exports = {
   getStore: ctrlWrapper(getStore),
   getGudgetById: ctrlWrapper(getGudgetById),
+  getFilter: ctrlWrapper(getFilter),
   addGudget: ctrlWrapper(addGudget),
   updateGudget: ctrlWrapper(updateGudget),
   deleteGudget: ctrlWrapper(deleteGudget),
