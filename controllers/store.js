@@ -11,9 +11,7 @@ const fs = require("fs/promises");
 const path = require("path");
 
 const getStore = async (req, res) => {
-  const { category } = req.query;
-  const query = category ? { category } : {};
-  const result = await Store.find(query);
+  const result = await Store.find(req.query || {});
   res.status(200).json(result);
 };
 
